@@ -1,6 +1,11 @@
 // =========================================================================
-// Déclaration des variables                                               =
+// Déclaration des variables   
 // =========================================================================
+const box = document.getElementById("declaration")
+const inp = document.getElementById("cle-activation")
+const form = document.getElementById("form-activation")
+const error = document.getElementById("message-erreur")
+
 const REGEX_CODE_PRODUIT = /(([\d\w]){5}-){2,4}([\d\w]){5}/;
 const listeProduits = {
     "Q1JBC-3ZPX8-TVHUH" : "Final Fantasy 1",
@@ -35,6 +40,53 @@ function isProduitExiste(codeProduit) {
 // =========================================================================
 // Ajoutez votre code plus bas                                             =
 // =========================================================================
+ const par = document.createElement('p');
+ 
+ function meassage( test) {
+   
+    par.textContent = test;
+    error.append(par)
+}
 
+inp.addEventListener("keyup" ,validation )
 
+function validation() {
+    if(!REGEX_CODE_PRODUIT.test(this.value)){
+        meassage(erreurValidation.formatInvalide)
+        error.classList.remove('hidden')
+    } else{
+        error.classList.add('hidden')
+
+    }
+   
+}
+form.addEventListener('submit' , Form)
+
+function Form(e) {
+    let bool = false;
+
+    for (const key of Object.keys(listeProduits)) {
+        if (inp.value !== key) {
+            if (!bool) {
+                e.preventDefault();
+                meassage(erreurValidation.produitInexistant);
+                error.classList.remove('hidden');
+                bool = true; 
+            }
+        } else {
+            error.classList.add('hidden');
+            break; 
+        }
+    }
+
+   
+    if (!box.checked) {
+        e.preventDefault();
+        meassage(erreurValidation.terme);
+        error.classList.remove("hidden")
+    } else {
+        error.classList.add("hidden")
+
+    }
+}
 
